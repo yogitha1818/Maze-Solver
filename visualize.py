@@ -6,28 +6,24 @@ def visualize_maze(maze, path, start, end):
     rows, cols = len(maze), len(maze[0])
     maze_array = np.array(maze)
 
-    # Create a color grid: 1=wall (black), 0=path (white)
+    # Initialize color grid (white for path, black for walls)
     color_grid = np.zeros((rows, cols, 3))
-    color_grid[maze_array == 1] = [0, 0, 0]  # Black for walls
-    color_grid[maze_array == 0] = [1, 1, 1]  # White for paths
+    color_grid[maze_array == 1] = [0, 0, 0]  # Walls = Black
+    color_grid[maze_array == 0] = [1, 1, 1]  # Path = White
 
-    # Mark the path in blue
+    # Mark path = Blue
     for r, c in path:
-        color_grid[r, c] = [0, 0, 1]  # Blue path
+        color_grid[r, c] = [0, 0, 1]
 
-    # Start in green, End in red
-    sr, sc = start
-    er, ec = end
-    color_grid[sr, sc] = [0, 1, 0]  # Green
-    color_grid[er, ec] = [1, 0, 0]  # Red
+    # Mark Start = Green, End = Red
+    color_grid[start[0], start[1]] = [0, 1, 0]
+    color_grid[end[0], end[1]] = [1, 0, 0]
 
+    # ✅ Create a new figure and pass it to Streamlit
     fig, ax = plt.subplots(figsize=(cols, rows))
     ax.imshow(color_grid, interpolation='none')
-    ax.set_xticks(np.arange(-0.5, cols, 1))
-    ax.set_yticks(np.arange(-0.5, rows, 1))
-    ax.set_xticklabels([])
-    ax.set_yticklabels([])
-    ax.grid(color='black', linestyle='-', linewidth=1)
-    ax.set_title("Maze Visualization")
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_title("Maze Path Visualization")
 
-    st.pyplot(fig)
+    st.pyplot(fig)  # ✅ FIXED: Pass fig to st.pyplot
